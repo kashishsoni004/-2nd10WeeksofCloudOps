@@ -13,30 +13,14 @@ Deployment: Docker on AWS EC2
 🏗️ Architecture Overview
 Browser
    |
+   
    |----> Frontend (React + Apache) : Port 80
                     |
-                    |----> Backend (Node.js API) : Port 81
+                    |----> Backend (Node.js API) : Port 81 
                                    |
                                    |----> Database (MySQL)
 
-📂 Project Structure
-2nd10WeeksofCloudOps-main/
-│
-├── backend/        # Node.js backend
-│   ├── Dockerfile
-│   ├── index.js
-│   ├── package.json
-│   └── .env
-│
-├── client/         # React frontend
-│   ├── Dockerfile
-│   ├── public/
-│   └── src/
-│       └── pages/
-│           └── config.js
-│
-├── docker-compose.yaml
-└── README.md
+
 🗄️ Database Setup (AWS RDS – MySQL)
 
 This project uses AWS RDS (MySQL) as the database.
@@ -116,6 +100,8 @@ If data is visible → Database setup successful ✅
 
  
 ⚙️ Prerequisites 
+
+
 RDS DATABASES 
 
 AWS EC2 (Amazon Linux)
@@ -131,16 +117,28 @@ Ports open in Security Group:
 81 → Backend
 
 🚀 Installation & Setup
+
 1️⃣ Install Docker & Git
+
+
 sudo su -
+
 yum install docker -y
+
 systemctl start docker
+
 yum install git -y
 
+
 2️⃣ Clone Repository
+
 git clone https://github.com/CloudTechDevOps/2nd10WeeksofCloudOps-main.git
+
+
 cd 2nd10WeeksofCloudOps-main
-5️⃣ Configure Backend to Use RDS
+
+
+Configure Backend to Use RDS
 
 Create .env file inside backend/ directory:
 
@@ -158,6 +156,8 @@ DB_NAME=books
 Backend will automatically connect to RDS using these values.
 
 🔧 Backend Setup
+
+
 3️⃣ Build Backend Image
 cd backend
 vi Dockerfile
@@ -166,6 +166,7 @@ docker build -t backend .
 4️⃣ Run Backend Container
 docker run -dt -p 81:3000 backend
 
+
 5️⃣ Test Backend
 http://<EC2-PUBLIC-IP>:81/books
 
@@ -173,33 +174,46 @@ http://<EC2-PUBLIC-IP>:81/books
 You should see JSON data.
 
 🎨 Frontend Setup
+
+
 6️⃣ Configure API URL
 
 Edit file:
 
+
 client/src/pages/config.js
 
 const API_BASE_URL = "http://<EC2-PUBLIC-IP>:81";
-export default API_BASE_URL;
+
+
 
 7️⃣ Build Frontend Image
+
 cd client
+
 vi Dockerfile
+
 docker build -t frontend .
 
 8️⃣ Run Frontend Container
+
 docker run -dt -p 80:80 frontend
+
+
 
 🌐 Access Application
 
 Frontend UI
+
 
 http://<EC2-PUBLIC-IP>
 
 
 Backend API
 
+
 http://<EC2-PUBLIC-IP>:81/books
+
 
 🐳 Docker Containers Status
 
@@ -213,24 +227,6 @@ Expected output:
 frontend  → 0.0.0.0:80->80
 backend   → 0.0.0.0:81->3000
 
-✅ Features
 
-View all books
 
-Add new book
 
-Update book
-
-Delete book
-
-Dockerized frontend & backend
-
-Ready for CI/CD & Kubernetes
-
-🧠 Notes
-
-Backend runs internally on port 3000
-
-Apache serves React build on port 80
-
-Frontend talks to backend using API_BASE_URL
