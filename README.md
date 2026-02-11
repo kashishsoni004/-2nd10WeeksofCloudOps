@@ -15,8 +15,11 @@ Browser
    |
    
    |----> Frontend (React + Apache) : Port 80
+
+   
                     |
                     |----> Backend (Node.js API) : Port 81 
+                                 
                                    |
                                    |----> Database (MySQL)
 
@@ -143,14 +146,20 @@ Configure Backend to Use RDS
 Create .env file inside backend/ directory:
 
 DB_HOST=<RDS-ENDPOINT>
+
 DB_USER=<RDS-USERNAME>
+
 DB_PASSWORD=<RDS-PASSWORD>
+
 DB_NAME=books
 
 Example:
 DB_HOST=bookdb.xxxxxx.us-east-1.rds.amazonaws.com
+
 DB_USER=admin
+
 DB_PASSWORD=********
+
 DB_NAME=books
 
 Backend will automatically connect to RDS using these values.
@@ -159,15 +168,20 @@ Backend will automatically connect to RDS using these values.
 
 
 3️⃣ Build Backend Image
+
 cd backend
+
 vi Dockerfile
+
 docker build -t backend .
 
 4️⃣ Run Backend Container
+
 docker run -dt -p 81:3000 backend
 
 
 5️⃣ Test Backend
+
 http://<EC2-PUBLIC-IP>:81/books
 
 
