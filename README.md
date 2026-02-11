@@ -12,14 +12,14 @@ Deployment: Docker on AWS EC2
 
 🏗️ Architecture Overview
 Browser
-   |
+  
    
-   |----> Frontend (React + Apache) : Port 80
-
    
+   
+    |
+    |----> Frontend (React + Apache) : Port 80
                     |
                     |----> Backend (Node.js API) : Port 81 
-                                 
                                    |
                                    |----> Database (MySQL)
 
@@ -28,43 +28,44 @@ Browser
 
 This project uses AWS RDS (MySQL) as the database.
 
-1️⃣ Create RDS MySQL Instance
 
-Go to AWS Console → RDS
+ 1️⃣ Create RDS MySQL Instance
 
-Create MySQL database
+         Go to AWS Console → RDS
 
-Choose:
+         Create MySQL database
 
-Engine: MySQL
+         Choose:
 
-DB instance identifier: bookdb (any name)
+         Engine: MySQL
 
-Username & Password (note it down)
+         DB instance identifier: bookdb (any name)
 
-Make sure:
+         Username & Password (note it down)
 
-Public access = Yes
+         Make sure:
 
-Security Group allows port 3306
+         Public access = Yes
+
+         Security Group allows port 3306
 
 Launch RDS and wait till status is Available
 
 2️⃣ Connect RDS using MySQL Workbench
 
-Open MySQL Workbench
+     Open MySQL Workbench
 
-Create new connection
+     Create new connection
 
-Enter:
+     Enter:
 
-Hostname: RDS Endpoint
+     Hostname: RDS Endpoint
 
-Port: 3306
+     Port: 3306
 
-Username: RDS username
+     Username: RDS username
 
-Password: RDS password
+     Password: RDS password
 
 Test connection → ✅ Connected
 
@@ -85,18 +86,18 @@ Execute the query
 
 This will:
 
-Create database
+     Create database
 
-Create books table
+     Create books table
 
-Insert sample data
+     Insert sample data
 
 4️⃣ Verify Database
 
 Run:
 
-USE books;
-SELECT * FROM books;
+    USE books;
+    SELECT * FROM books;
 
 
 If data is visible → Database setup successful ✅
@@ -105,84 +106,77 @@ If data is visible → Database setup successful ✅
 ⚙️ Prerequisites 
 
 
-RDS DATABASES 
+* RDS DATABASES 
 
-AWS EC2 (Amazon Linux)
+* AWS EC2 (Amazon Linux)
 
-Docker
+* Docker
 
-Git
+* Git
 
-Ports open in Security Group:
+* Ports open in Security Group:
 
-80 → Frontend
+* 80 → Frontend
 
-81 → Backend
+* 81 → Backend
 
 🚀 Installation & Setup
 
 1️⃣ Install Docker & Git
 
 
-sudo su -
+     sudo su -
 
-yum install docker -y
+     yum install docker -y
 
-systemctl start docker
+     systemctl start docker
 
-yum install git -y
+     yum install git -y
 
 
 2️⃣ Clone Repository
 
-git clone https://github.com/CloudTechDevOps/2nd10WeeksofCloudOps-main.git
+    git clone https://github.com/CloudTechDevOps/2nd10WeeksofCloudOps-main.git
 
 
-cd 2nd10WeeksofCloudOps-main
+    cd 2nd10WeeksofCloudOps-main
 
 
 Configure Backend to Use RDS
 
 Create .env file inside backend/ directory:
 
-DB_HOST=<RDS-ENDPOINT>
+    DB_HOST=<RDS-ENDPOINT>
 
-DB_USER=<RDS-USERNAME>
+    DB_USER=<RDS-USERNAME>
 
-DB_PASSWORD=<RDS-PASSWORD>
+    DB_PASSWORD=<RDS-PASSWORD>
 
-DB_NAME=books
-
-Example:
-DB_HOST=bookdb.xxxxxx.us-east-1.rds.amazonaws.com
-
-DB_USER=admin
-
-DB_PASSWORD=********
-
-DB_NAME=books
+    DB_NAME=books
+    
 
 Backend will automatically connect to RDS using these values.
+
 
 🔧 Backend Setup
 
 
 3️⃣ Build Backend Image
 
-cd backend
+     cd backend
 
-vi Dockerfile
+    vi Dockerfile
 
-docker build -t backend .
+    docker build -t backend .
 
 4️⃣ Run Backend Container
 
-docker run -dt -p 81:3000 backend
+    docker run -dt -p 81:3000 backend
 
 
 5️⃣ Test Backend
 
-http://<EC2-PUBLIC-IP>:81/books
+    http://<EC2-PUBLIC-IP>:81/books
 
 
 You should see JSON data.
@@ -195,23 +189,23 @@ You should see JSON data.
 Edit file:
 
 
-client/src/pages/config.js
+    client/src/pages/config.js
 
-const API_BASE_URL = "http://<EC2-PUBLIC-IP>:81";
+    const API_BASE_URL = "http://<EC2-PUBLIC-IP>:81";
 
 
 
 7️⃣ Build Frontend Image
 
-cd client
+    cd client
 
-vi Dockerfile
+    vi Dockerfile
 
-docker build -t frontend .
+    docker build -t frontend .
 
 8️⃣ Run Frontend Container
 
-docker run -dt -p 80:80 frontend
+    docker run -dt -p 80:80 frontend
 
 
 
@@ -220,13 +214,13 @@ docker run -dt -p 80:80 frontend
 Frontend UI
 
 
-http://<EC2-PUBLIC-IP>
+     http://<EC2-PUBLIC-IP>
 
 
 Backend API
 
 
-http://<EC2-PUBLIC-IP>:81/books
+    http://<EC2-PUBLIC-IP>:81/books
 
 
 🐳 Docker Containers Status
